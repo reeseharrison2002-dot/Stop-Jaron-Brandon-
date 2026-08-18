@@ -1,5 +1,6 @@
 {
   "meta": {
+    "published": false,
     "domain": "jaronbrandon.com",
     "pageTitle": "Jaron Brandon Raised His Own Pay | jaronbrandon.com",
     "metaDescription": "Jaron Brandon voted to raise his own pay, then cut jobs and raised taxes. See the record.",
@@ -8,18 +9,12 @@
     "ogImage": "https://jaronbrandon.com/img/og-card.jpg"
   },
   "hero": {
-    "headlineLines": [
-      "Crooked Politician",
-      "Jaron Brandon Raised",
-      "His Own Pay"
-    ],
+    "headlineLines": ["Crooked Politician", "Jaron Brandon Raised", "His Own Pay"],
     "sourceNumber": "1",
     "sourceUrl": "#record",
     "subhead": "While residents faced rising costs, he voted himself a raise — then made you pay for it."
   },
-  "transition": {
-    "line": "Then he voted to…"
-  },
+  "transition": { "line": "Then he voted to…" },
   "contrast": {
     "left": {
       "imageUrl": "",
