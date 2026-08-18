@@ -1,0 +1,191 @@
+
+  :root{
+    --ground:#161616;
+    --ground-2:#1a1a1a;
+    --accent:#e8a13c;
+    --ink:#f2f0ea;
+    --ink-dim:#b7b3aa;
+    --rule:#3a3a3a;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--ground);
+    color:var(--ink);
+    font-family:'Inter','Source Sans 3',system-ui,-apple-system,sans-serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,.display{
+    font-family:'Archivo Narrow','Oswald',sans-serif;
+    font-weight:900;
+    letter-spacing:-0.01em;
+    line-height:0.9;
+    text-transform:uppercase;
+  }
+  a{color:var(--accent);text-decoration:none;}
+  a:hover{text-decoration:underline;}
+  p{max-width:65ch;}
+  .src{
+    font-size:0.55em;
+    vertical-align:super;
+    color:var(--accent);
+    font-weight:700;
+    margin-left:2px;
+  }
+  .src a{color:var(--accent);}
+
+  /* ---------- BAND 1: HERO ---------- */
+  .band-hero{
+    min-height:100vh;
+    position:relative;
+    display:flex;
+    align-items:flex-end;
+    background-color:#0c0c0c;
+    background-image:url('/img/hero.jpg');
+    background-size:cover;
+    background-position:center 20%;
+    background-repeat:no-repeat;
+  }
+  .band-hero::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:linear-gradient(0deg, rgba(10,10,10,0.96) 0%, rgba(10,10,10,0.78) 32%, rgba(10,10,10,0.25) 62%, rgba(10,10,10,0.05) 100%);
+  }
+  .hero-inner{
+    position:relative;
+    z-index:2;
+    padding:8vh 6vw 7vh;
+    max-width:1100px;
+  }
+  .hero-headline{
+    font-size:clamp(2.4rem, 7vw, 5.5rem);
+    color:var(--ink);
+  }
+  .hero-headline .src{font-size:0.3em;}
+  .hero-subhead{
+    font-family:'Inter',sans-serif;
+    font-weight:400;
+    font-size:clamp(1rem,2vw,1.25rem);
+    color:var(--ink-dim);
+    margin-top:1.25rem;
+    max-width:52ch;
+  }
+
+  /* ---------- BAND 2: TRANSITION ---------- */
+  .band-transition{
+    padding:14vh 6vw;
+    text-align:center;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    min-height:40vh;
+  }
+  .transition-line{
+    font-size:clamp(1.8rem, 5vw, 3.5rem);
+    color:var(--ink);
+    max-width:20ch;
+  }
+
+  /* ---------- BAND 3: CONTRAST PAIR ---------- */
+  .band-contrast{
+    background:var(--ground-2);
+    border-top:1px solid var(--rule);
+    border-bottom:1px solid var(--rule);
+  }
+  .contrast-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+  }
+  .contrast-col{
+    padding:8vh 5vw;
+    position:relative;
+  }
+  .contrast-col:first-child{
+    border-right:1px solid var(--rule);
+  }
+  .contrast-figure{
+    width:100%;
+    aspect-ratio:4/3;
+    background:repeating-linear-gradient(45deg, #232323, #232323 10px, #262626 10px, #262626 20px);
+    border:1px dashed var(--rule);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:var(--ink-dim);
+    font-size:0.85rem;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    margin-bottom:1.75rem;
+  }
+  .contrast-col h2{
+    font-size:clamp(1.6rem, 3.2vw, 2.4rem);
+    margin-bottom:0.85rem;
+  }
+  .contrast-col p{
+    color:var(--ink-dim);
+    font-size:1.02rem;
+  }
+  .contrast-col .src-line{
+    margin-top:1rem;
+    font-size:0.85rem;
+  }
+
+  @media (max-width:760px){
+    .contrast-grid{grid-template-columns:1fr;}
+    .contrast-col:first-child{
+      border-right:none;
+      border-bottom:1px solid var(--rule);
+    }
+  }
+
+  /* ---------- BAND 4: RECORD SUMMARY ---------- */
+  .band-record{
+    padding:10vh 6vw;
+    max-width:900px;
+    margin:0 auto;
+  }
+  .band-record h2{
+    font-size:clamp(1.6rem,3vw,2.2rem);
+    margin-bottom:2.5rem;
+    color:var(--accent);
+  }
+  .record-list{
+    list-style:none;
+  }
+  .record-item{
+    display:flex;
+    flex-wrap:wrap;
+    gap:0.5rem 1rem;
+    align-items:baseline;
+    padding:1rem 0;
+    border-top:1px solid var(--rule);
+    font-family:'SFMono-Regular','Consolas','Liberation Mono',monospace;
+    font-size:0.95rem;
+  }
+  .record-item:last-child{border-bottom:1px solid var(--rule);}
+  .record-date{color:var(--accent);min-width:6.5rem;}
+  .record-desc{flex:1 1 320px;color:var(--ink);}
+  .record-src{color:var(--ink-dim);font-size:0.85rem;}
+
+  /* ---------- BAND 5: FOOTER ---------- */
+  .band-footer{
+    padding:5vh 6vw 6vh;
+    border-top:1px solid var(--rule);
+    color:var(--ink-dim);
+    font-size:0.78rem;
+    line-height:1.7;
+    max-width:900px;
+  }
+  .band-footer strong{color:var(--ink);}
+
+  .placeholder-flag{
+    display:inline-block;
+    background:rgba(232,161,60,0.12);
+    border:1px solid var(--accent);
+    color:var(--accent);
+    padding:0.1em 0.4em;
+    font-size:0.75em;
+    border-radius:2px;
+  }
