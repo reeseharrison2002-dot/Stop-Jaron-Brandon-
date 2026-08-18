@@ -172,6 +172,25 @@ ${style}
 `;
 }
 
+function renderComingSoon() {
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Coming Soon</title>
+<meta name="robots" content="noindex, nofollow">
+<style>
+  body{background:#161616;color:#f2f0ea;font-family:system-ui,sans-serif;display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0;text-align:center;padding:2rem;}
+  p{color:#8a8a8a;max-width:32ch;line-height:1.6;}
+</style>
+</head>
+<body>
+  <p>This page is not yet available.</p>
+</body>
+</html>`;
+}
+
 // ---------- admin UI ----------
 
 function renderLoginPage(error) {
@@ -252,6 +271,15 @@ function renderDashboard(content, message) {
   .top{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;}
   a.logout{color:#e8a13c;font-size:0.85rem;}
   .msg{background:rgba(232,161,60,0.15);border:1px solid #e8a13c;color:#e8a13c;padding:0.75rem 1rem;border-radius:4px;margin-bottom:1.5rem;font-size:0.9rem;}
+  .publish-bar{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:1rem 1.25rem;border-radius:8px;margin-bottom:1.5rem;border:1px solid;}
+  .publish-bar.live{background:rgba(80,200,120,0.1);border-color:#4caf6f;}
+  .publish-bar.hidden{background:rgba(232,161,60,0.1);border-color:#e8a13c;}
+  .publish-bar .status{font-weight:700;font-size:0.9rem;}
+  .publish-bar.live .status{color:#4caf6f;}
+  .publish-bar.hidden .status{color:#e8a13c;}
+  .publish-bar .desc{color:#b7b3aa;font-size:0.82rem;margin-top:0.2rem;}
+  .publish-toggle{display:flex;align-items:center;gap:0.6rem;white-space:nowrap;}
+  .publish-toggle label{color:#f2f0ea;font-size:0.9rem;margin:0;}
   fieldset{border:1px solid #333;border-radius:8px;padding:1.25rem 1.5rem 1.5rem;margin-bottom:1.5rem;}
   legend{padding:0 0.5rem;color:#e8a13c;font-weight:700;font-size:0.95rem;text-transform:uppercase;letter-spacing:0.03em;}
   label{display:block;font-size:0.8rem;color:#b7b3aa;margin-bottom:0.3rem;}
@@ -286,6 +314,16 @@ function renderDashboard(content, message) {
   ${message ? `<div class="msg">${escapeHtml(message)}</div>` : ''}
 
   <form method="POST" action="/admin/save">
+
+    <div class="publish-bar ${c.meta.published ? 'live' : 'hidden'}">
+      <div>
+        <div class="status">${c.meta.published ? '● LIVE — visible to the public' : '● HIDDEN — only visible to you while logged in'}</div>
+        <div class="desc">${c.meta.published ? 'Anyone with the link can see this page right now.' : 'Uncheck stays this way while you edit. Check the box and save to publish.'}</div>
+      </div>
+      <div class="publish-toggle">
+        <label for="published"><input type="checkbox" id="published" name="published" ${c.meta.published ? 'checked' : ''}> Publish site</label>
+      </div>
+    </div>
 
     <fieldset>
       <legend>Hero (Band 1)</legend>
@@ -405,7 +443,11 @@ function requireAuth(req, res, next) {
 
 app.get('/', (req, res) => {
   const content = readContent();
+  const isAdmin = Boolean(req.session && req.session.isAdmin);
   res.set('Cache-Control', 'no-cache');
+  if (!content.meta.published && !isAdmin) {
+    return res.status(200).send(renderComingSoon());
+  }
   res.send(renderPage(content));
 });
 
@@ -459,6 +501,7 @@ app.post('/admin/save', requireAuth, (req, res) => {
 
   const content = {
     meta: {
+      published: Boolean(b.published),
       domain: b.domain || '',
       pageTitle: b.pageTitle || '',
       metaDescription: b.metaDescription || '',
