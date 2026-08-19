@@ -5,6 +5,7 @@ const express = require('express');
 const cookieSession = require('cookie-session');
 
 const app = express();
+app.set('trust proxy', 1);
 const PORT = process.env.PORT || 3000;
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
 const SESSION_SECRET = process.env.SESSION_SECRET || 'change-me-please-' + Math.random().toString(36);
