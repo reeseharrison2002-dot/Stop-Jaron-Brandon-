@@ -2,10 +2,9 @@ require('dotenv').config();
 const fs = require('fs');
 const path = require('path');
 const express = require('express');
-const session = require('express-session');
+const cookieSession = require('cookie-session');
 
 const app = express();
-app.set('trust proxy', 1);
 const PORT = process.env.PORT || 3000;
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
 const SESSION_SECRET = process.env.SESSION_SECRET || 'change-me-please-' + Math.random().toString(36);
@@ -422,16 +421,13 @@ function renderDashboard(content, message) {
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(
-  session({
-    secret: SESSION_SECRET,
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-      httpOnly: true,
-      sameSite: 'lax',
-      secure: process.env.NODE_ENV === 'production',
-      maxAge: 8 * 60 * 60 * 1000, // 8 hours
-    },
+  cookieSession({
+    name: 'session',
+    keys: [SESSION_SECRET],
+    httpOnly: true,
+    sameSite: 'lax',
+    secure: process.env.NODE_ENV === 'production',
+    maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days — survives server restarts, since nothing is stored in server memory
   })
 );
 
@@ -475,7 +471,8 @@ app.post('/admin/login', (req, res) => {
 });
 
 app.get('/admin/logout', (req, res) => {
-  req.session.destroy(() => res.redirect('/admin'));
+  req.session = null;
+  res.redirect('/admin');
 });
 
 app.get('/admin/dashboard', requireAuth, (req, res) => {
